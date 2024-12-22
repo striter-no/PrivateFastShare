@@ -19,7 +19,7 @@ app = Flask(__name__)
 
 app.logger.disabled = True
 
-# Глобальные переменные для хранения состояния
+# Global variables for storing state
 class State:
     attempts = 0
     original_message = ""
@@ -34,16 +34,16 @@ def vigenere_encrypt(message, key):
     encrypted = []
     key_length = len(key)
     for i, char in enumerate(message):
-        shift = ord(key[i % key_length])  # Используем код символа ключа напрямую
-        encrypted.append(chr((ord(char) + shift) % 0x110000))  # 0x110000 - максимальный код символа в Unicode
+        shift = ord(key[i % key_length])  # Use the key character code directly
+        encrypted.append(chr((ord(char) + shift) % 0x110000))  # 0x110000 - maximum character code in Unicode
     return ''.join(encrypted)
 
 def vigenere_decrypt(encrypted, key):
     decrypted = []
     key_length = len(key)
     for i, char in enumerate(encrypted):
-        shift = ord(key[i % key_length])  # Используем код символа ключа напрямую
-        decrypted.append(chr((ord(char) - shift) % 0x110000))  # 0x110000 - максимальный код символа в Unicode
+        shift = ord(key[i % key_length])  # Use the key character code directly
+        decrypted.append(chr((ord(char) - shift) % 0x110000))  # 0x110000 - maximum character code in Unicode
     return ''.join(decrypted)
 
 @app.route('/')
@@ -52,7 +52,7 @@ def index():
     # print(f"Index called: Encrypted Message: {state.encrypted_message}, Attempts: {state.attempts}")
     if state.attempts >= 3:
         stop = True
-        # requests.post('http://127.0.0.1:5000/shutdown', data=jsonify({"token": uid}))  # Завершение работы сервера
+        # requests.post('http://127.0.0.1:5000/shutdown', data=jsonify({"token": uid}))  # Server shutdown
         return jsonify({'success': False, 'message': 'The maximum number of attempts has been exceeded'})
     
     return render_template('index.html', 
@@ -86,7 +86,7 @@ def check_key():
 
     if state.attempts >= 3:
         stop = True
-        # requests.post('http://127.0.0.1:5000/shutdown', json={"token": uid})  # Завершение работы сервера
+        # requests.post('http://127.0.0.1:5000/shutdown', json={"token": uid})  # Server shutdown
         return jsonify({'success': False, 'message': 'The maximum number of attempts has been exceeded'})
 
     return jsonify({
@@ -137,10 +137,10 @@ if __name__ == '__main__':
 
     if not os.environ.get('WERKZEUG_RUN_MAIN'):
         print("Enter data to be encrypted and the key for it:")
-        state.original_message = input("Message: ")
-        state.original_key = input("Key: ")
+        state.original_message = getpass("Message: ")
+        state.original_key = getpass("Key: ")
         
-        # Проверяем, что значения присваиваются
+        # Check that the values are assigned
         # print(f"Original Message: {state.original_message}, Original Key: {state.original_key}")
         
         state.encrypted_message = vigenere_encrypt(state.original_message, state.original_key)
