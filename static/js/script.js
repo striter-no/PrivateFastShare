@@ -48,7 +48,7 @@ async function fetchAttempts() {
     try {
         const response = await fetch('/get_attempts');
         if (!response.ok) {
-            throw new Error('Ошибка сети');
+            throw new Error('Network error');
         }
         const data = await response.json();
         let attempts = data.attempts;
