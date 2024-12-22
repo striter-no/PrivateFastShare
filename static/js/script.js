@@ -13,7 +13,7 @@ async function checkKey() {
         });
 
         if (!response.ok) {
-            throw new Error('Ошибка сети');
+            throw new Error('Network error');
         }
 
         const data = await response.json();
@@ -66,7 +66,7 @@ async function fetchAttempts() {
     }
 }
 
-// Вызов функции при загрузке страницы
+// Call the function on page load
 window.onload = fetchAttempts;
 
 async function copyToClipboard(textToCopy) {
@@ -98,19 +98,19 @@ async function copyToClipboard(textToCopy) {
 async function copyText() {
     try {
         await copyToClipboard(decryptedMessage);
-        alert('Текст скопирован!');
+        alert('Text copied');
 
-        // Отправляем сигнал завершения работы сервера
+        // Send a signal to terminate the server
         const response = await fetch('/shutdown', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ word: decryptedMessage }) // Убедитесь, что uid доступен здесь
+            body: JSON.stringify({ word: decryptedMessage }) // Make sure uid is available here
         });
 
         if (!response.ok) {
-            throw new Error('Ошибка при завершении работы сервера');
+            throw new Error('Server shutdown error');
         }
     } catch (error) {
         console.error('Ошибка:', error);
@@ -122,24 +122,24 @@ function showError(message) {
     document.getElementById('submit-btn').disabled = true;
     document.getElementById('key').disabled = true;
 
-    // Создаем элемент для сообщения об ошибке
+    // Create an element for error message
     const errorDiv = document.createElement('div');
     errorDiv.style.position = 'fixed';
     errorDiv.style.top = '0';
     errorDiv.style.left = '0';
     errorDiv.style.right = '0';
-    errorDiv.style.backgroundColor = 'rgba(200, 50, 50, 0.5)'; // Полупрозрачный красный
+    errorDiv.style.backgroundColor = 'rgba(200, 50, 50, 0.5)'; // Translucent red
     errorDiv.style.color = 'white';
     errorDiv.style.fontSize = '24px';
     errorDiv.style.textAlign = 'center';
     errorDiv.style.padding = '20px';
     errorDiv.innerText = message;
 
-    // Добавляем элемент на страницу
+    // Add an element to the page
     document.body.appendChild(errorDiv);
 }
 
-// Обновляем обработчик ошибок
+// Update the error handler
 window.addEventListener('error', function(event) {
     showError('');
 });
