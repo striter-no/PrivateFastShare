@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>ViDRAFT</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    <div class="container">
+        <h1>ViDRAFT</h1>
+        <div class="message">{{ encrypted_message }}</div>
+        <input type="text" id="key" placeholder="Enter the key">
+        <div class="input-group">
+            <div class="attempts">Attempts: {{ attempts }}/{{ max_attempts }}</div>
+            <button onclick="copyText()" id="copy-btn" class="copy-button">Copy decrypted</button>
+        </div>
+        <button onclick="checkKey()" id="submit-btn">Try to decrypt</button>
+    </div>
+    
+</body>
+</html>
